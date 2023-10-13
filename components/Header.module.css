@@ -1,0 +1,26 @@
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	text-align: center;
+	gap: 8px;
+}
+
+.link {
+	display: inline-block;
+	border-radius: 12px;
+	padding: 2px 16px;
+	color: inherit;
+	text-decoration: inherit;
+	opacity: 0.5;
+}
+.link:hover {
+	opacity: 1;
+}
+
+.active {
+	background-color: rgba(255, 255, 255, 0.05);
+	opacity: 1;
+	font-weight: 500;
+}
