@@ -2,7 +2,7 @@ import Header from '@/components/Header';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { ReactNode } from 'react';
-import './globals.css';
+import './globals.scss';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500'] });
 
