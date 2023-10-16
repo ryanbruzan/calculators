@@ -93,6 +93,21 @@ table {
 	}
 }
 
+input {
+	outline: none;
+	appearance: none;
+	border: 1px solid transparent;
+	background-color: #1d1e22;
+	color: #fff;
+	padding: 4px;
+	border-radius: 4px;
+	font-family: inherit;
+	line-height: 1;
+}
+input:focus {
+	border-color: #fff;
+}
+
 :where(p, h1, h2, h3, h4, h5, h6):first-child {
 	margin-top: 0;
 }
