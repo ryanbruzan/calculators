@@ -212,8 +212,8 @@ export default function Drip() {
 					</thead>
 					{data?.length > 0 && (
 						<tbody>
-							{data.map((d) => (
-								<tr>
+							{data.map((d, i) => (
+								<tr key={i}>
 									<td>{d.year}</td>
 									<td>{d.age}</td>
 									<td>{toMoney(d.start)}</td>
