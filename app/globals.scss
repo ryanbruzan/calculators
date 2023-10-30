@@ -1,3 +1,12 @@
+:root {
+	--generic-spacer: 32px;
+}
+@media all and (max-width: 480px) {
+	:root {
+		--generic-spacer: 16px;
+	}
+}
+
 * {
 	box-sizing: border-box;
 	-webkit-font-smoothing: antialiased;
@@ -13,13 +22,13 @@ body {
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.8;
 }
 
 body {
-	padding: 32px;
+	padding: var(--generic-spacer);
 	overflow: auto;
 }
 
@@ -31,14 +40,14 @@ main {
 
 p {
 	padding: 0;
-	margin: 24px 0;
+	margin: var(--generic-spacer) 0;
 }
 
 form {
 	background-color: rgba(255, 255, 255, 0.05);
 	border-radius: 12px;
 	padding: 16px;
-	margin-top: 32px;
+	margin-top: var(--generic-spacer);
 
 	.row {
 		display: flex;
@@ -52,10 +61,29 @@ form {
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 		padding-top: 8px;
 	}
+	@media all and (max-width: 480px) {
+		.row {
+			display: flex;
+			justify-content: flex-start;
+			align-items: stretch;
+			flex-wrap: nowrap;
+			flex-direction: column;
+			gap: 8px;
+		}
+		.row + .row {
+			margin-top: 16px;
+			padding-top: 16px;
+		}
+	}
 
 	.separator {
 		flex: 1;
 		min-width: 0;
+	}
+	@media all and (max-width: 480px) {
+		.separator {
+			display: none;
+		}
 	}
 
 	.value {
@@ -64,6 +92,14 @@ form {
 		align-items: center;
 		flex-wrap: nowrap;
 		gap: 8px;
+		white-space: nowrap;
+
+		@media all and (max-width: 480px) {
+			input {
+				flex: 1;
+				min-width: 0;
+			}
+		}
 	}
 }
 
@@ -71,9 +107,10 @@ form {
 	background-color: rgba(255, 255, 255, 0.05);
 	border-radius: 12px;
 	padding: 16px;
-	margin-top: 32px;
+	margin-top: var(--generic-spacer);
 	width: 100%;
 	overflow: auto;
+	position: relative;
 }
 
 table {
@@ -85,9 +122,11 @@ table {
 		text-align: left;
 		padding: 0 8px;
 	}
+
 	tr:not(:first-child) :where(th, td) {
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 	}
+
 	tr:hover {
 		background: rgba(255, 255, 255, 0.05);
 	}
