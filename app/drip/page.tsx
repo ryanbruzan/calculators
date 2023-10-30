@@ -17,14 +17,14 @@ type Year = {
 };
 
 export default function Drip() {
-	const [age, setAge] = useState(27);
-	const [initial, setInitial] = useState(40_000);
-	const [dailyContributions, setDailyContributions] = useState(150);
+	const [age, setAge] = useState(25);
+	const [initial, setInitial] = useState(5_000);
+	const [dailyContributions, setDailyContributions] = useState(5);
 	const [annualPriceIncrease, setAnnualPriceIncrease] = useState(16);
-	const [annualDividendYield, setAnnualDividendYield] = useState(0.59);
+	const [annualDividendYield, setAnnualDividendYield] = useState(0.7);
 	const [annualDividendGrowth, setAnnualDividendGrowth] = useState(0);
 	const [taxRate, setTaxRate] = useState(15);
-	const [years, setYears] = useState(60 - age);
+	const [years, setYears] = useState(65 - age);
 
 	const data = useMemo(() => {
 		const final: Year[] = [];
@@ -200,7 +200,6 @@ export default function Drip() {
 					<thead>
 						<tr>
 							<th>Year</th>
-							<th>Age</th>
 							<th>Start</th>
 							<th>Cont.</th>
 							<th>Growth</th>
@@ -215,7 +214,6 @@ export default function Drip() {
 							{data.map((d, i) => (
 								<tr key={i}>
 									<td>{d.year}</td>
-									<td>{d.age}</td>
 									<td>{toMoney(d.start)}</td>
 									<td>{toMoney(d.contribution)}</td>
 									<td>{toMoney(d.growth)}</td>
