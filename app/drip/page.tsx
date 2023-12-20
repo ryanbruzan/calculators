@@ -1,6 +1,6 @@
 'use client';
 
-import toMoney from '@/utils/toMoney';
+import formatMoney from '@/utils/formatMoney';
 import { FormEventHandler, useMemo, useState } from 'react';
 import styles from './page.module.scss';
 
@@ -214,12 +214,12 @@ export default function Drip() {
 							{data.map((d, i) => (
 								<tr key={i}>
 									<td>{d.year}</td>
-									<td>{toMoney(d.start)}</td>
-									<td>{toMoney(d.contribution)}</td>
-									<td>{toMoney(d.growth)}</td>
-									<td>{toMoney(d.grossDividends)}</td>
-									<td>{toMoney(d.netDividends)}</td>
-									<td>{toMoney(d.end)}</td>
+									<td>{formatMoney(d.start)}</td>
+									<td>{formatMoney(d.contribution)}</td>
+									<td>{formatMoney(d.growth)}</td>
+									<td>{formatMoney(d.grossDividends)}</td>
+									<td>{formatMoney(d.netDividends)}</td>
+									<td>{formatMoney(d.end)}</td>
 									<td>{d.age + 1}</td>
 								</tr>
 							))}
