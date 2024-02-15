@@ -126,3 +126,30 @@ input:focus {
 :where(p, h1, h2, h3, h4, h5, h6):last-child {
 	margin-bottom: 0;
 }
+
+.chart-tooltip {
+	width: 240px;
+	padding: 16px;
+	background: #000;
+	border-radius: 12px;
+
+	p {
+		margin: 0 0 4px 0;
+		font-weight: 700;
+	}
+
+	.line {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		padding: 4px 0;
+	}
+	.line + .line {
+		border-top: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	.label {
+		opacity: 0.8;
+	}
+}
