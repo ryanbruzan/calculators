@@ -4,6 +4,8 @@ import formatMoney from '@/utils/formatMoney';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import kebabCase from 'lodash/kebabCase';
 import { FormEventHandler, useMemo } from 'react';
+import Chart from './Chart';
+import styles from './drip.module.scss';
 import { Year } from './types';
 
 const key = (name: string) => kebabCase(`drip_${name}`);
@@ -29,6 +31,9 @@ export default function Drip() {
 			current.start = previous?.end || initial;
 			current.contributions = contributions * 252;
 			current.growth = current.start * (increase / 100);
+			current.growthCumulative = previous?.growth
+				? previous.growth + current.growth
+				: current.growth;
 			current.divYield = previous?.divYield
 				? previous.divYield * (1 + divGrowth / 100)
 				: divYield;
@@ -39,6 +44,8 @@ export default function Drip() {
 				current.contributions +
 				current.growth +
 				current.netDiv;
+			current.salary =
+				(current.end - current.growthCumulative * 0.15) * 0.1;
 
 			final.push(current as Year);
 		}
@@ -59,7 +66,7 @@ export default function Drip() {
 	};
 
 	return (
-		<>
+		<div className={styles.container}>
 			{/* Form */}
 			<form onSubmit={handleSubmit}>
 				<div className="row">
@@ -197,6 +204,9 @@ export default function Drip() {
 				</div>
 			</form>
 
+			{/* Chart */}
+			<Chart data={data} />
+
 			{/* Table data */}
 			<div className="table-scroller">
 				<table>
@@ -209,6 +219,7 @@ export default function Drip() {
 							<th>Gross Div.</th>
 							<th>Net Div.</th>
 							<th>End</th>
+							<th>Salary</th>
 							<th>Age</th>
 						</tr>
 					</thead>
@@ -223,6 +234,7 @@ export default function Drip() {
 									<td>{formatMoney(d.grossDiv)}</td>
 									<td>{formatMoney(d.netDiv)}</td>
 									<td>{formatMoney(d.end)}</td>
+									<td>{formatMoney(d.salary)}/yr</td>
 									<td>{d.age + 1}</td>
 								</tr>
 							))}
@@ -230,6 +242,6 @@ export default function Drip() {
 					)}
 				</table>
 			</div>
-		</>
+		</div>
 	);
 }

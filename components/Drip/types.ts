@@ -4,8 +4,10 @@ export type Year = {
 	start: number;
 	contributions: number;
 	growth: number;
+	growthCumulative: number;
 	divYield: number;
 	grossDiv: number;
 	netDiv: number;
 	end: number;
+	salary: number;
 };
