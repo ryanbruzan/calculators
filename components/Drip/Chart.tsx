@@ -53,6 +53,7 @@ const Chart = ({ data }: Props) => {
 						dataKey="end"
 						stroke="#fff"
 						strokeWidth={1}
+						animationDuration={400}
 					/>
 					<XAxis
 						dataKey="year"
@@ -60,6 +61,7 @@ const Chart = ({ data }: Props) => {
 						strokeDasharray="3 3"
 					/>
 					<Tooltip
+						cursor={{ stroke: '#fff' }}
 						position={{ x: 0, y: 0 }}
 						content={CustomTooltip}
 					/>
