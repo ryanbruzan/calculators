@@ -11,6 +11,7 @@ import { Year } from './types';
 const key = (name: string) => kebabCase(`drip_${name}`);
 
 export default function Drip() {
+	// States
 	const [age, setAge] = useLocalStorage(key('age'), 25);
 	const [initial, setInitial] = useLocalStorage(key('initial'), 5_000);
 	const [contributions, setContributions] = useLocalStorage(key('dc'), 5);
@@ -20,6 +21,7 @@ export default function Drip() {
 	const [tax, setTax] = useLocalStorage(key('taxRate'), 15);
 	const [years, setYears] = useLocalStorage(key('years'), 65 - age);
 
+	// Aggregate date for chart + table
 	const data = useMemo(() => {
 		const final: Year[] = [];
 		for (let i = 0; i < years; i++) {
@@ -61,10 +63,12 @@ export default function Drip() {
 		years,
 	]);
 
+	// Handlers
 	const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault();
 	};
 
+	// Render
 	return (
 		<div className={styles.container}>
 			{/* Form */}
