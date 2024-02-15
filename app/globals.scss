@@ -38,12 +38,14 @@ p {
 	padding: 0;
 	margin: var(--generic-spacer) 0;
 }
+p.subtle {
+	opacity: 0.5;
+}
 
 form {
 	background-color: rgba(255, 255, 255, 0.05);
 	border-radius: 12px;
 	padding: 16px;
-	margin-top: var(--generic-spacer);
 
 	.row {
 		display: flex;

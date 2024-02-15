@@ -1,30 +1,23 @@
 'use client';
 
 import formatMoney from '@/utils/formatMoney';
-import { FormEventHandler, useMemo, useState } from 'react';
+import { useLocalStorage } from '@uidotdev/usehooks';
+import kebabCase from 'lodash/kebabCase';
+import { FormEventHandler, useMemo } from 'react';
 import styles from './page.module.scss';
+import { Year } from './types';
 
-type Year = {
-	year: number;
-	age: number;
-	start: number;
-	contribution: number;
-	growth: number;
-	dividendYield: number;
-	grossDividends: number;
-	netDividends: number;
-	end: number;
-};
+const key = (name: string) => kebabCase(`drip_${name}`);
 
 export default function Drip() {
-	const [age, setAge] = useState(25);
-	const [initial, setInitial] = useState(5_000);
-	const [dailyContributions, setDailyContributions] = useState(5);
-	const [annualPriceIncrease, setAnnualPriceIncrease] = useState(16);
-	const [annualDividendYield, setAnnualDividendYield] = useState(0.7);
-	const [annualDividendGrowth, setAnnualDividendGrowth] = useState(0);
-	const [taxRate, setTaxRate] = useState(15);
-	const [years, setYears] = useState(65 - age);
+	const [age, setAge] = useLocalStorage(key('age'), 25);
+	const [initial, setInitial] = useLocalStorage(key('initial'), 5_000);
+	const [contributions, setContributions] = useLocalStorage(key('dc'), 5);
+	const [increase, setIncrease] = useLocalStorage(key('api'), 16);
+	const [divYield, setDivYield] = useLocalStorage(key('ady'), 0.7);
+	const [divGrowth, setDivGrowth] = useLocalStorage(key('adg'), 0);
+	const [tax, setTax] = useLocalStorage(key('taxRate'), 15);
+	const [years, setYears] = useLocalStorage(key('years'), 65 - age);
 
 	const data = useMemo(() => {
 		const final: Year[] = [];
@@ -35,19 +28,18 @@ export default function Drip() {
 			current.year = i + 1;
 			current.age = previous?.age ? previous.age + 1 : age;
 			current.start = previous?.end || initial;
-			current.contribution = dailyContributions * 252;
-			current.growth = current.start * (annualPriceIncrease / 100);
-			current.dividendYield = previous?.dividendYield
-				? previous.dividendYield * (1 + annualDividendGrowth / 100)
-				: annualDividendYield;
-			current.grossDividends =
-				current.start * (current.dividendYield / 100);
-			current.netDividends = current.grossDividends * (1 - taxRate / 100);
+			current.contributions = contributions * 252;
+			current.growth = current.start * (increase / 100);
+			current.divYield = previous?.divYield
+				? previous.divYield * (1 + divGrowth / 100)
+				: divYield;
+			current.grossDiv = current.start * (current.divYield / 100);
+			current.netDiv = current.grossDiv * (1 - tax / 100);
 			current.end =
 				current.start +
-				current.contribution +
+				current.contributions +
 				current.growth +
-				current.netDividends;
+				current.netDiv;
 
 			final.push(current as Year);
 		}
@@ -55,11 +47,11 @@ export default function Drip() {
 	}, [
 		initial,
 		age,
-		dailyContributions,
-		annualPriceIncrease,
-		annualDividendYield,
-		annualDividendGrowth,
-		taxRate,
+		contributions,
+		increase,
+		divYield,
+		divGrowth,
+		tax,
 		years,
 	]);
 
@@ -77,10 +69,11 @@ export default function Drip() {
 					<div className="value">
 						<input
 							type="text"
-							value={age}
+							defaultValue={age}
 							onChange={(e) =>
 								setAge(parseFloat(e.target.value) || 0)
 							}
+							onBlur={(e) => (e.target.value = age.toString())}
 							autoFocus
 						/>
 					</div>
@@ -92,9 +85,12 @@ export default function Drip() {
 						<span className="meta">$</span>
 						<input
 							type="text"
-							value={initial}
+							defaultValue={initial}
 							onChange={(e) =>
 								setInitial(parseFloat(e.target.value) || 0)
+							}
+							onBlur={(e) =>
+								(e.target.value = initial.toString())
 							}
 						/>
 					</div>
@@ -106,11 +102,14 @@ export default function Drip() {
 						<span className="meta">$</span>
 						<input
 							type="text"
-							value={dailyContributions}
+							defaultValue={contributions}
 							onChange={(e) =>
-								setDailyContributions(
+								setContributions(
 									parseFloat(e.target.value) || 0
 								)
+							}
+							onBlur={(e) =>
+								(e.target.value = contributions.toString())
 							}
 						/>
 						<span className="meta">/ day</span>
@@ -122,11 +121,12 @@ export default function Drip() {
 					<div className="value">
 						<input
 							type="text"
-							value={annualPriceIncrease}
+							defaultValue={increase}
 							onChange={(e) =>
-								setAnnualPriceIncrease(
-									parseFloat(e.target.value) || 0
-								)
+								setIncrease(parseFloat(e.target.value) || 0)
+							}
+							onBlur={(e) =>
+								(e.target.value = increase.toString())
 							}
 						/>
 						<span className="meta">% / yr</span>
@@ -138,11 +138,12 @@ export default function Drip() {
 					<div className="value">
 						<input
 							type="text"
-							value={annualDividendYield}
+							defaultValue={divYield}
 							onChange={(e) =>
-								setAnnualDividendYield(
-									parseFloat(e.target.value) || 0
-								)
+								setDivYield(parseFloat(e.target.value) || 0)
+							}
+							onBlur={(e) =>
+								(e.target.value = divYield.toString())
 							}
 						/>
 						<span className="meta">% / yr</span>
@@ -154,11 +155,12 @@ export default function Drip() {
 					<div className="value">
 						<input
 							type="text"
-							value={annualDividendGrowth}
+							defaultValue={divGrowth}
 							onChange={(e) =>
-								setAnnualDividendGrowth(
-									parseFloat(e.target.value) || 0
-								)
+								setDivGrowth(parseFloat(e.target.value) || 0)
+							}
+							onBlur={(e) =>
+								(e.target.value = divGrowth.toString())
 							}
 						/>
 						<span className="meta">% / yr</span>
@@ -170,10 +172,11 @@ export default function Drip() {
 					<div className="value">
 						<input
 							type="text"
-							value={taxRate}
+							defaultValue={tax}
 							onChange={(e) =>
-								setTaxRate(parseFloat(e.target.value) || 0)
+								setTax(parseFloat(e.target.value) || 0)
 							}
+							onBlur={(e) => (e.target.value = tax.toString())}
 						/>
 						<span className="meta">% / yr</span>
 					</div>
@@ -184,10 +187,11 @@ export default function Drip() {
 					<div className="value">
 						<input
 							type="text"
-							value={years}
+							defaultValue={years}
 							onChange={(e) =>
 								setYears(parseFloat(e.target.value) || 0)
 							}
+							onBlur={(e) => (e.target.value = years.toString())}
 						/>
 						<span className="meta">years</span>
 					</div>
@@ -215,10 +219,10 @@ export default function Drip() {
 								<tr key={i}>
 									<td>{d.year}</td>
 									<td>{formatMoney(d.start)}</td>
-									<td>{formatMoney(d.contribution)}</td>
+									<td>{formatMoney(d.contributions)}</td>
 									<td>{formatMoney(d.growth)}</td>
-									<td>{formatMoney(d.grossDividends)}</td>
-									<td>{formatMoney(d.netDividends)}</td>
+									<td>{formatMoney(d.grossDiv)}</td>
+									<td>{formatMoney(d.netDiv)}</td>
 									<td>{formatMoney(d.end)}</td>
 									<td>{d.age + 1}</td>
 								</tr>

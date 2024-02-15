@@ -1,8 +1,7 @@
-import Header from '@/components/Header';
+import '@/app/globals.scss';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { ReactNode } from 'react';
-import './globals.scss';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500'] });
 
@@ -16,10 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en">
 			<body className={poppins.className}>
-				<main>
-					<Header />
-					{children}
-				</main>
+				<main>{children}</main>
 			</body>
 		</html>
 	);
