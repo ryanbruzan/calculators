@@ -19,7 +19,7 @@ export default function Drip() {
 	const [divYield, setDivYield] = useLocalStorage(key('ady'), 0.7);
 	const [divGrowth, setDivGrowth] = useLocalStorage(key('adg'), 0);
 	const [tax, setTax] = useLocalStorage(key('taxRate'), 15);
-	const [years, setYears] = useLocalStorage(key('years'), 65 - age);
+	const [years, setYears] = useLocalStorage(key('years'), 25);
 
 	// Aggregate date for chart + table
 	const data = useMemo(() => {
