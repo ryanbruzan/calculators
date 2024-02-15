@@ -18,7 +18,7 @@ const Header = ({}: Props) => {
 					[styles.active]: pathname === '/drip',
 				})}
 			>
-				Home
+				DRIP
 			</Link>
 		</div>
 	);
