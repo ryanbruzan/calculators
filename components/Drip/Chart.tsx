@@ -22,10 +22,11 @@ const CustomTooltip = ({
 		const point: Year = payload[0].payload;
 		return (
 			<div className="chart-tooltip">
-				<p>End of Year {point.year}</p>
 				<div className="line">
-					<div className="label">Age</div>
-					<div className="value">{point.age + 1}</div>
+					<div className="label">Year / Age</div>
+					<div className="value">
+						{point.year} / {point.age + 1}
+					</div>
 				</div>
 				<div className="line">
 					<div className="label">Balance</div>
@@ -55,9 +56,13 @@ const Chart = ({ data }: Props) => {
 					/>
 					<XAxis
 						dataKey="year"
+						stroke="rgba(255, 255, 255, 0.3)"
 						strokeDasharray="3 3"
 					/>
-					<Tooltip content={CustomTooltip} />
+					<Tooltip
+						position={{ x: 0, y: 0 }}
+						content={CustomTooltip}
+					/>
 				</LineChart>
 			</ResponsiveContainer>
 		</div>
