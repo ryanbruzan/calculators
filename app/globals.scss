@@ -1,4 +1,5 @@
 :root {
+	--font-size: 14px;
 	--generic-spacer: 32px;
 }
 @media all and (max-width: 480px) {
@@ -19,7 +20,7 @@ body {
 	color: #fff;
 	padding: 0;
 	margin: 0;
-	font-size: 14px;
+	font-size: var(--font-size);
 	font-weight: 400;
 	line-height: 1.8;
 	overflow-x: hidden;
@@ -113,7 +114,7 @@ input {
 	color: #fff;
 	padding: 4px;
 	border-radius: 4px;
-	font-size: 14px;
+	font-size: var(--font-size);
 	font-family: inherit;
 	line-height: 1;
 }
