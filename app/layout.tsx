@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 	title: 'Calculators',
 	description: 'A set of calculators by Ryan Bruzan',
 	robots: 'noindex',
+	viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
