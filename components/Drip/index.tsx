@@ -1,10 +1,10 @@
 'use client';
 
+import DripChart from '@/components/DripChart';
 import formatMoney from '@/utils/formatMoney';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import kebabCase from 'lodash/kebabCase';
 import { FormEventHandler, useMemo } from 'react';
-import Chart from './Chart';
 import styles from './drip.module.scss';
 import { Year } from './types';
 
@@ -209,7 +209,7 @@ export default function Drip() {
 			</form>
 
 			{/* Chart */}
-			<Chart data={data} />
+			<DripChart data={data} />
 
 			{/* Table data */}
 			<div className="table-scroller">
