@@ -34,7 +34,7 @@ export default function Drip() {
 			current.contributions = contributions * 252;
 			current.growth = current.start * (increase / 100);
 			current.growthCumulative = previous?.growth
-				? previous.growth + current.growth
+				? previous.growthCumulative + current.growth
 				: current.growth;
 			current.divYield = previous?.divYield
 				? previous.divYield * (1 + divGrowth / 100)
