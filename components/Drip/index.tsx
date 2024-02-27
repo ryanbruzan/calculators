@@ -15,6 +15,7 @@ export default function Drip() {
 	const [age, setAge] = useLocalStorage(key('age'), 25);
 	const [initial, setInitial] = useLocalStorage(key('initial'), 5_000);
 	const [contributions, setContributions] = useLocalStorage(key('dc'), 5);
+	const [contGrowth, setContGrowth] = useLocalStorage(key('cg'), 0);
 	const [increase, setIncrease] = useLocalStorage(key('api'), 16);
 	const [divYield, setDivYield] = useLocalStorage(key('ady'), 0.7);
 	const [divGrowth, setDivGrowth] = useLocalStorage(key('adg'), 0);
@@ -31,7 +32,7 @@ export default function Drip() {
 			current.year = i + 1;
 			current.age = previous?.age ? previous.age + 1 : age;
 			current.start = previous?.end || initial;
-			current.contributions = contributions * 252;
+			current.contributions = contributions * 252 + contGrowth * i * 252;
 			current.growth = current.start * (increase / 100);
 			current.growthCumulative = previous?.growth
 				? previous.growthCumulative + current.growth
@@ -56,6 +57,7 @@ export default function Drip() {
 		initial,
 		age,
 		contributions,
+		contGrowth,
 		increase,
 		divYield,
 		divGrowth,
@@ -123,6 +125,26 @@ export default function Drip() {
 							}
 						/>
 						<span className="meta">/ day</span>
+					</div>
+				</div>
+				<div className="row">
+					<div className="label">
+						Daily Contribution Growth (Yearly)
+					</div>
+					<div className="separator"></div>
+					<div className="value">
+						<span className="meta">$</span>
+						<input
+							type="text"
+							defaultValue={contGrowth}
+							onChange={(e) =>
+								setContGrowth(parseFloat(e.target.value) || 0)
+							}
+							onBlur={(e) =>
+								(e.target.value = contGrowth.toString())
+							}
+						/>
+						<span className="meta">/ year</span>
 					</div>
 				</div>
 				<div className="row">
