@@ -17,10 +17,10 @@ export default function Drip() {
 	const [contributions, setContributions] = useLocalStorage(key('dc'), 5);
 	const [contGrowth, setContGrowth] = useLocalStorage(key('cg'), 0);
 	const [increase, setIncrease] = useLocalStorage(key('api'), 16);
-	const [divYield, setDivYield] = useLocalStorage(key('ady'), 0.7);
-	const [divGrowth, setDivGrowth] = useLocalStorage(key('adg'), 0);
+	const [divYield, setDivYield] = useLocalStorage(key('dy'), 0.2);
 	const [tax, setTax] = useLocalStorage(key('taxRate'), 15);
 	const [years, setYears] = useLocalStorage(key('years'), 25);
+	const [salaryYield, setSalaryYield] = useLocalStorage(key('sy'), 7.5);
 
 	// Aggregate date for chart + table
 	const data = useMemo(() => {
@@ -37,10 +37,7 @@ export default function Drip() {
 			current.growthCumulative = previous?.growth
 				? previous.growthCumulative + current.growth
 				: current.growth;
-			current.divYield = previous?.divYield
-				? previous.divYield * (1 + divGrowth / 100)
-				: divYield;
-			current.grossDiv = current.start * (current.divYield / 100);
+			current.grossDiv = current.start * (divYield / 100);
 			current.netDiv = current.grossDiv * (1 - tax / 100);
 			current.end =
 				current.start +
@@ -48,7 +45,8 @@ export default function Drip() {
 				current.growth +
 				current.netDiv;
 			current.salary =
-				(current.end - current.growthCumulative * 0.15) * 0.1;
+				(current.end - current.growthCumulative * 0.15) *
+				(salaryYield / 100);
 
 			final.push(current as Year);
 		}
@@ -60,9 +58,9 @@ export default function Drip() {
 		contGrowth,
 		increase,
 		divYield,
-		divGrowth,
 		tax,
 		years,
+		salaryYield,
 	]);
 
 	// Handlers
@@ -182,23 +180,6 @@ export default function Drip() {
 					</div>
 				</div>
 				<div className="row">
-					<div className="label">Annual Dividend Growth</div>
-					<div className="separator"></div>
-					<div className="value">
-						<input
-							type="text"
-							defaultValue={divGrowth}
-							onChange={(e) =>
-								setDivGrowth(parseFloat(e.target.value) || 0)
-							}
-							onBlur={(e) =>
-								(e.target.value = divGrowth.toString())
-							}
-						/>
-						<span className="meta">% / yr</span>
-					</div>
-				</div>
-				<div className="row">
 					<div className="label">Tax Rate</div>
 					<div className="separator"></div>
 					<div className="value">
@@ -228,6 +209,23 @@ export default function Drip() {
 						<span className="meta">years</span>
 					</div>
 				</div>
+				<div className="row">
+					<div className="label">Salary Yield</div>
+					<div className="separator"></div>
+					<div className="value">
+						<input
+							type="text"
+							defaultValue={salaryYield}
+							onChange={(e) =>
+								setSalaryYield(parseFloat(e.target.value) || 0)
+							}
+							onBlur={(e) =>
+								(e.target.value = salaryYield.toString())
+							}
+						/>
+						<span className="meta">% / yr</span>
+					</div>
+				</div>
 			</form>
 
 			{/* Chart */}
@@ -242,6 +240,7 @@ export default function Drip() {
 							<th>Start</th>
 							<th>Cont.</th>
 							<th>Growth</th>
+							<th>Growth Cum.</th>
 							<th>Gross Div.</th>
 							<th>Net Div.</th>
 							<th>End</th>
@@ -257,6 +256,7 @@ export default function Drip() {
 									<td>{formatMoney(d.start)}</td>
 									<td>{formatMoney(d.contributions)}</td>
 									<td>{formatMoney(d.growth)}</td>
+									<td>{formatMoney(d.growthCumulative)}</td>
 									<td>{formatMoney(d.grossDiv)}</td>
 									<td>{formatMoney(d.netDiv)}</td>
 									<td>{formatMoney(d.end)}</td>
