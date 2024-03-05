@@ -45,7 +45,7 @@ export default function Drip() {
 				current.growth +
 				current.netDiv;
 			current.salary =
-				(current.end - current.growthCumulative * 0.15) *
+				(current.end - current.growthCumulative * (tax / 100)) *
 				(salaryYield / 100);
 
 			final.push(current as Year);
